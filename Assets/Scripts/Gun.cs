@@ -31,6 +31,7 @@ public class Gun : MonoBehaviour
         InvokeRepeating("fireBullet", 0f, 0.1f); // calls a method to invoke the bullet if it is not invoked
        }
       }
+
         if (Input.GetMouseButtonUp(0)) // stops gun fire once mouse is left go
         {
             CancelInvoke("fireBullet");
