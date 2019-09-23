@@ -62,6 +62,11 @@ public class GameManager : MonoBehaviour
                     GameObject spawnLocation = spawnPoints[spawnPoint];// grabs current spawn location generated in last code
                     GameObject newAlien = Instantiate(alien) as GameObject;// creates an instance of any prefab that is passed into it
                     newAlien.transform.position = spawnLocation.transform.position;// positions the alien at the spawn points
+                    Alien alienScript = newAlien.GetComponent<Alien>();// gets the reference from the Alien script
+                    alienScript.target = player.transform;// sets the alien towards the space marine's current position
+                    Vector3 targetRotation = new Vector3(player.transform.position.x, // rotates the alien towards the hero using the alien's y axis position
+                       newAlien.transform.position.y, player.transform.position.z);
+                    newAlien.transform.LookAt(targetRotation);
                 }
             }
         }
