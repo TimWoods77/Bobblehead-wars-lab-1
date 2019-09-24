@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody head;
     public float moveSpeed = 50.0f;// determines how fast the character will move around
     public LayerMask layerMask; // lets you indicate what layers the ray can hit
+    public Animator bodyAnimator;
     private Vector3 currentLookTarget = Vector3.zero;// where you want the marine to stare
     private CharacterController characterController; // creates an instance variable to store characterController
     // Start is called before the first frame update
@@ -28,9 +29,11 @@ public class PlayerController : MonoBehaviour
             0, Input.GetAxis("Vertical")); // calculates direction of movement
         if (moveDirection == Vector3.zero) // see if value equals vector3.zero if so marine stays still.
         {   // TODO 
+            bodyAnimator.SetBool("IsMoving", false);
         }  else
         {
             head.AddForce(transform.right * 150, ForceMode.Acceleration); // gets the head to bobble by multipling direction by force.
+            bodyAnimator.SetBool("IsMoving", true);
         }
         RaycastHit hit;// creates an empty raycast hit. If hit populates with the object
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);// cast ray from main camera to mouse position
