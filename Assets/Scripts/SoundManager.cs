@@ -16,6 +16,11 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance = null; // stores a single instance to the SoundManager
     private AudioSource soundEffectAudio;// alows us to play sound effects
 
+    public void PlayOneShot(AudioClip clip)
+    {
+        soundEffectAudio.PlayOneShot(clip);// a wrapper call to PlayOneShot
+    }
+
     // Start is called before the first frame update
     void Start()
     {

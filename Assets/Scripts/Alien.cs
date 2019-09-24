@@ -29,6 +29,7 @@ public class Alien : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)// makes the collision into a trigger
     {
-      Destroy(gameObject);// deletes the alien instance
+      Destroy(gameObject);// deletes the alien instance 
+      SoundManager.Instance.PlayOneShot(SoundManager.Instance.alienDeath);
     }
 }
