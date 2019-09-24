@@ -1649,11 +1649,11 @@ MonoBehaviour:
   - {fileID: 1275326994}
   - {fileID: 712509603}
   alien: {fileID: 1790720051634383840, guid: 22d17b4ede47b5444bb8a1b94f0989b3, type: 3}
-  maxAliensOnScreen: 10
-  totalAliens: 10
+  maxAliensOnScreen: 50
+  totalAliens: 50
   minSpawnTime: 0
   maxSpawnTime: 3
-  aliensPerSpawn: 1
+  aliensPerSpawn: 3
 --- !u!4 &1876257516
 Transform:
   m_ObjectHideFlags: 0
@@ -1681,6 +1681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1037165180}
+  navigationUpdate: 0
 --- !u!1001 &2101268156
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1856,6 +1857,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 7f78b096b427d419f9918e4ae4fc4aec, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 259d96c0cf3826c4383ee9c20208dae1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f78b096b427d419f9918e4ae4fc4aec, type: 3}
 --- !u!4 &5668533767892406417 stripped
