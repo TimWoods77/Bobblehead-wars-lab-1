@@ -6,6 +6,7 @@ public class Gun : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public Transform launchPosition;
+    private AudioSource audioSource;
 
     void fireBullet()
     {   // 1   
@@ -14,11 +15,12 @@ public class Gun : MonoBehaviour
         bullet.transform.position = launchPosition.position;
         // 3   
         bullet.GetComponent<Rigidbody>().velocity = transform.parent.forward * 100;
+        audioSource.PlayOneShot(SoundManager.Instance.gunFire);// plays shooting sound
     }
     // Start is called before the first frame update
     void Start()
     {
-
+        audioSource = GetComponent<AudioSource>();// gets a reference to the attached audio source
     }
 
     // Update is called once per frame
