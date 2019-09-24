@@ -570,6 +570,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 3d3bef85a1570924d93dc47cf3eb138a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 5c1380c8a7606104da9330157ffc02b3, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d3bef85a1570924d93dc47cf3eb138a, type: 3}
 --- !u!4 &588712208 stripped
@@ -757,6 +761,12 @@ HingeJoint:
 --- !u!1 &885675410 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100006, guid: 3d3bef85a1570924d93dc47cf3eb138a,
+    type: 3}
+  m_PrefabInstance: {fileID: 588712207}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &885675411 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9500000, guid: 3d3bef85a1570924d93dc47cf3eb138a,
     type: 3}
   m_PrefabInstance: {fileID: 588712207}
   m_PrefabAsset: {fileID: 0}
@@ -977,6 +987,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 4096
+  bodyAnimator: {fileID: 885675411}
 --- !u!143 &1037165182
 CharacterController:
   m_ObjectHideFlags: 0
