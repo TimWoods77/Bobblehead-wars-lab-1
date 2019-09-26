@@ -94,9 +94,18 @@ public class GameManager : MonoBehaviour
                     Vector3 targetRotation = new Vector3(player.transform.position.x, // rotates the alien towards the hero using the alien's y axis position
                        newAlien.transform.position.y, player.transform.position.z);
                     newAlien.transform.LookAt(targetRotation);
+                    alienScript.OnDestroy.AddListener(AlienDestroyed);// notifies the GameManger everytime an alien gets destroyed
                 }
             }
         }
     }
 
+    public void AlienDestroyed()
+    {
+        aliensOnScreen -= 1;// decreases number of aliens on screen
+        totalAliens -= 1;
+    }
+    
+       // Debug.Log("dead alien");
+    
 }
