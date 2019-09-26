@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody head;
     public float moveSpeed = 50.0f;// determines how fast the character will move around
+    public float[] hitForce;// arrays of force values for the camera
     public LayerMask layerMask; // lets you indicate what layers the ray can hit
     public Animator bodyAnimator;
     private Vector3 currentLookTarget = Vector3.zero;// where you want the marine to stare
