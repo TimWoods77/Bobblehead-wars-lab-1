@@ -65,5 +65,10 @@ public class Gun : MonoBehaviour
         {
             CancelInvoke("fireBullet");
         }
+        currentTime += Time.deltaTime; // incraments the time.
+        if (currentTime > upgradeTime && isUpgraded == true)// if time is > then time player has been upgraded it takes upgrade away
+        {
+            isUpgraded = false;
+        }
     }
 }
