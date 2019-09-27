@@ -5,12 +5,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Rigidbody head;
-    public float moveSpeed = 50.0f;// determines how fast the character will move around
-    public float[] hitForce;// arrays of force values for the camera
     public LayerMask layerMask; // lets you indicate what layers the ray can hit
     public Animator bodyAnimator;
+    public float moveSpeed = 50.0f;// determines how fast the character will move around
+    public float[] hitForce;// arrays of force values for the camera
+    public float timeBetweenHits = 2.5f;// grace period after marine sustains damage
     private Vector3 currentLookTarget = Vector3.zero;// where you want the marine to stare
     private CharacterController characterController; // creates an instance variable to store characterController
+    private bool isHit = false;// flag that tells us the marine took a hit
+    private float timeSinceHit = 0;// tracks amount of time in the grace period 
+    private int hitNumber = -1;// number of times hero got hit also to get the shake intensity
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +58,33 @@ public class PlayerController : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(targetPosition -    transform.position); // calculates first Quaternion to determine the rotation
             // 3 
             transform.rotation = Quaternion.Lerp(transform.rotation,    rotation, Time.deltaTime * 10.0f);// returns rotation of where the marine should stand and lerp allows the full turn.
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Alien alien = other.gameObject.GetComponent<Alien>(); if (alien != null)
+        {
+            // 1 
+            if (!isHit)
+            {
+                hitNumber += 1;
+                // 2      
+                CameraShake cameraShake = Camera.main.GetComponent<CameraShake>();
+                if (hitNumber < hitForce.Length)
+                // 3       
+                {
+                    cameraShake.intensity = hitForce[hitNumber];
+                    cameraShake.Shake();
+                }
+                else
+                {
+                    // death todo      
+                }
+                isHit = true;
+                // 4      
+                SoundManager.Instance.PlayOneShot(SoundManager.Instance.hurt);
+            }     alien.Die();
         }
     }
 }
