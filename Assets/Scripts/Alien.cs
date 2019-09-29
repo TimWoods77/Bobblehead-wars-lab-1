@@ -8,8 +8,10 @@ public class Alien : MonoBehaviour
 {
     public UnityEvent OnDestroy;// custom unityevent type that can be configured in the inspector. calls an OnDestroy call which The OnDestroy event will occur with each call to an alien.
     public Transform target;// where alien should go
-    private NavMeshAgent agent;
+    public Rigidbody head;// helps launch alien head
+    public bool isAlive = true;//tracks alien's state
     public float navigationUpdate;//time in milliseconds that the alien updates its path
+    private NavMeshAgent agent;
     private float navigationTime = 0; // keeps track of the time that had past since the last update
     // Start is called before the first frame update
     void Start()
@@ -22,23 +24,39 @@ public class Alien : MonoBehaviour
     {
         if (target != null)
         {
-            navigationTime += Time.deltaTime; // checks to see if a certain amount of time passed then updates the path
-            if (navigationTime > navigationUpdate)
-            {
-              agent.destination = target.position; navigationTime = 0;
+            if (isAlive)
+            {    
+             navigationTime += Time.deltaTime; // checks to see if a certain amount of time passed then updates the path
+             if (navigationTime > navigationUpdate)
+             {
+               agent.destination = target.position;
+               navigationTime = 0;
+             }
+
             }
         }
     }
-    void OnTriggerEnter(Collider other)// makes the collision into a trigger
+    void OnTriggerEnter(Collider other)
     {
-        Die();// kills the alien instance and allows other objects to trigger the death behaviour
-      SoundManager.Instance.PlayOneShot(SoundManager.Instance.alienDeath);
+        if (isAlive)// checks to see if alien is alive first
+        {
+            Die(); SoundManager.Instance.PlayOneShot(SoundManager.Instance.alienDeath);
+        }
     }
 
     public void Die()
     {
-        OnDestroy.Invoke();// notifies everyone and GameManager of the aliens death so it can send out condolence cards to it's family lol
-        OnDestroy.RemoveAllListeners();// removes any listeners listening to event
-        Destroy(gameObject);// kills the alien
+        isAlive = false;// all of this code does is launch the alien's head off the body then destroys the animator for the alien
+        head.GetComponent<Animator>().enabled = false;
+        head.isKinematic = false;
+        head.useGravity = true;
+        head.GetComponent<SphereCollider>().enabled = true;
+        head.gameObject.transform.parent = null;
+        head.velocity = new Vector3(0, 26.0f, 3.0f);
+        OnDestroy.Invoke();
+        OnDestroy.RemoveAllListeners();// this code notifies the listeners removes them then deletes game object
+        SoundManager.Instance.PlayOneShot(SoundManager.Instance.alienDeath);
+        head.GetComponent<SelfDestruct>().Initiate();
+        Destroy(gameObject);
     }
 }
