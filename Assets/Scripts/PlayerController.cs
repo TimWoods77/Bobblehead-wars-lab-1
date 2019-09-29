@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public float timeBetweenHits = 2.5f;// grace period after marine sustains damage
     private Vector3 currentLookTarget = Vector3.zero;// where you want the marine to stare
     private CharacterController characterController; // creates an instance variable to store characterController
+    private DeathParticles deathParticles;
     private bool isDead = false;// keeps track of players current death state
     private bool isHit = false;// flag that tells us the marine took a hit
     private float timeSinceHit = 0;// tracks amount of time in the grace period 
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>(); // refrences the component 
+        deathParticles = gameObject.GetComponentInChildren<DeathParticles>();
     }
 
     // Update is called once per frame
@@ -110,6 +112,7 @@ public class PlayerController : MonoBehaviour
         head.transform.parent = null;//removes the gameobject from parent
         head.useGravity = true;
         SoundManager.Instance.PlayOneShot(SoundManager.Instance.marineDeath);// destroys current object while playing death sound
+        deathParticles.Activate();
         Destroy(gameObject); 
     }
 }
