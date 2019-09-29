@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public Gun gun;// reference to gun script
     public GameObject upgradePrefab;// gameobject player must collide with
     public GameObject deathFloor;// references the deathFloor
+    public Animator arenaAnimator;
     public int maxAliensOnScreen; //determines how many aliens appear on the screen
     public int totalAliens;// total ammount of aliens
     public float minSpawnTime;// controls the rate at which aliens appear
@@ -111,8 +112,18 @@ public class GameManager : MonoBehaviour
     {
         aliensOnScreen -= 1;// decreases number of aliens on screen
         totalAliens -= 1;
+        if (totalAliens == 0)
+        {
+            Invoke("endGame", 2.0f);
+        }
     }
-    
-       // Debug.Log("dead alien");
-    
+
+    // Debug.Log("dead alien");
+
+    private void endGame()
+    {
+        SoundManager.Instance.PlayOneShot(SoundManager.Instance.elevatorArrived);
+        arenaAnimator.SetTrigger("PlayerWon");
+    }
+
 }
