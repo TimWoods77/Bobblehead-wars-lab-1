@@ -29,9 +29,14 @@ public class GameManager : MonoBehaviour
         actualUpgradeTime = Mathf.Abs(actualUpgradeTime);// makes sure the number is a positive number
     }
 
+
     // Update is called once per frame
     void Update()
     {
+        if (player == null)// if hero is dead stops spawning of aliens
+        {
+            return;
+        }
         currentUpgradeTime += Time.deltaTime;//adds the amount of time from the past frame.
         if (currentUpgradeTime > actualUpgradeTime)
         {

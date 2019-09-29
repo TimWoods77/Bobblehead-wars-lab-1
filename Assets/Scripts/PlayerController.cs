@@ -7,11 +7,13 @@ public class PlayerController : MonoBehaviour
     public Rigidbody head;
     public LayerMask layerMask; // lets you indicate what layers the ray can hit
     public Animator bodyAnimator;
+    public Rigidbody marineBody; // marine's body
     public float moveSpeed = 50.0f;// determines how fast the character will move around
     public float[] hitForce;// arrays of force values for the camera
     public float timeBetweenHits = 2.5f;// grace period after marine sustains damage
     private Vector3 currentLookTarget = Vector3.zero;// where you want the marine to stare
     private CharacterController characterController; // creates an instance variable to store characterController
+    private bool isDead = false;// keeps track of players current death state
     private bool isHit = false;// flag that tells us the marine took a hit
     private float timeSinceHit = 0;// tracks amount of time in the grace period 
     private int hitNumber = -1;// number of times hero got hit also to get the shake intensity
@@ -59,32 +61,55 @@ public class PlayerController : MonoBehaviour
             // 3 
             transform.rotation = Quaternion.Lerp(transform.rotation,    rotation, Time.deltaTime * 10.0f);// returns rotation of where the marine should stand and lerp allows the full turn.
         }
+        if (isHit)
+        {
+            timeSinceHit += Time.deltaTime;//This tabulates time since the last hit to the hero. 
+            if (timeSinceHit > timeBetweenHits)//If that time exceeds timeBetweenHits, the player can take more hits.
+            {
+                isHit = false; timeSinceHit = 0;
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        Alien alien = other.gameObject.GetComponent<Alien>(); if (alien != null)
+        Alien alien = other.gameObject.GetComponent<Alien>(); if (alien != null)// checks to see if the colliding object has an alien script attached to it or not
         {
             // 1 
             if (!isHit)
             {
-                hitNumber += 1;
+                hitNumber += 1;// hit number increases by one 
                 // 2      
-                CameraShake cameraShake = Camera.main.GetComponent<CameraShake>();
-                if (hitNumber < hitForce.Length)
+                CameraShake cameraShake = Camera.main.GetComponent<CameraShake>();// references the camera shake after your hero gets hit
+                if (hitNumber < hitForce.Length)// checks to see if the hitNumber is less than the number of force values of shakes to determine whether or not the hero is dead or not
                 // 3       
                 {
-                    cameraShake.intensity = hitForce[hitNumber];
+                    cameraShake.intensity = hitForce[hitNumber];// sets force for the shaking effect than shakes the camera
                     cameraShake.Shake();
                 }
                 else
                 {
-                    // death todo      
+                    Die();
                 }
-                isHit = true;
+                isHit = true;// plays grunt sound and kills alien
                 // 4      
                 SoundManager.Instance.PlayOneShot(SoundManager.Instance.hurt);
             }     alien.Die();
         }
+    }
+
+    public void Die()
+    {
+        bodyAnimator.SetBool("IsMoving", false);// set to false because space marine is dead to prevent a zombie from running around
+        marineBody.transform.parent = null;// removes current game object from the parent
+        marineBody.isKinematic = false;// enables a collider to allow the marine's body to drop and roll
+        marineBody.useGravity = true;
+        marineBody.gameObject.GetComponent<CapsuleCollider>().enabled = true;
+        marineBody.gameObject.GetComponent<Gun>().enabled = false;// disables the gun to prevent firing after death
+        Destroy(head.gameObject.GetComponent<HingeJoint>());// destroys the joints to remove head from the body  
+        head.transform.parent = null;//removes the gameobject from parent
+        head.useGravity = true;
+        SoundManager.Instance.PlayOneShot(SoundManager.Instance.marineDeath);// destroys current object while playing death sound
+        Destroy(gameObject); 
     }
 }
