@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject alien; // prefab for alien
     public Gun gun;// reference to gun script
     public GameObject upgradePrefab;// gameobject player must collide with
+    public GameObject deathFloor;// references the deathFloor
     public int maxAliensOnScreen; //determines how many aliens appear on the screen
     public int totalAliens;// total ammount of aliens
     public float minSpawnTime;// controls the rate at which aliens appear
@@ -100,6 +101,7 @@ public class GameManager : MonoBehaviour
                        newAlien.transform.position.y, player.transform.position.z);
                     newAlien.transform.LookAt(targetRotation);
                     alienScript.OnDestroy.AddListener(AlienDestroyed);// notifies the GameManger everytime an alien gets destroyed
+                    alienScript.GetDeathParticles().SetDeathFloor(deathFloor);
                 }
             }
         }

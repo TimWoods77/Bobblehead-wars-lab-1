@@ -12,7 +12,18 @@ public class Alien : MonoBehaviour
     public bool isAlive = true;//tracks alien's state
     public float navigationUpdate;//time in milliseconds that the alien updates its path
     private NavMeshAgent agent;
+    private DeathParticles deathParticles;
     private float navigationTime = 0; // keeps track of the time that had past since the last update
+
+    public DeathParticles GetDeathParticles()
+    {
+        if (deathParticles == null)
+        {
+            deathParticles = GetComponentInChildren<DeathParticles>();// returns the first deathparticles script that it finds
+        }
+        return deathParticles;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +68,11 @@ public class Alien : MonoBehaviour
         OnDestroy.RemoveAllListeners();// this code notifies the listeners removes them then deletes game object
         SoundManager.Instance.PlayOneShot(SoundManager.Instance.alienDeath);
         head.GetComponent<SelfDestruct>().Initiate();
+        if (deathParticles)
+        {
+            deathParticles.transform.parent = null;// makes blood splatter when aliens die
+            deathParticles.Activate();
+        }
         Destroy(gameObject);
     }
 }
