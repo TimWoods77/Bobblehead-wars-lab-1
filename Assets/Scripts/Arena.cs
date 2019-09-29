@@ -25,6 +25,11 @@ public class Arena : MonoBehaviour
         arenaAnimator.SetBool("OnElevator", true);// kicks off the animation
     }
 
+    public void ActivatePlatform()
+    {
+        sphereCollider.enabled = true;
+    }
+
 
     // Update is called once per frame
     void Update()
